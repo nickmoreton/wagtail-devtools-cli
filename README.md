@@ -1,2 +1,3 @@
-# wagtail-devtools-cli
-A CLI to interact with the wagtail-devtools-cli package
+# Wagtail Devtools Cli
+
+A CLI to interact with the [wagtail-devtools](https://github.com/wagtail-packages/wagtail-devtools) package
