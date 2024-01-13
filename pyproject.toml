@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "wagtail-devtools-cli"
+version = "0.1.0"
+description = ""
+authors = ["Nick Moreton <nickmoreton@me.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+click = "^8.1.7"
+requests = "^2.31.0"
+rich = "^13.7.0"
+
+[tool.poetry.scripts]
+cli = "wagtail_devtools_cli.cli:main"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0.0"
+pytest-cov = "^4.1.0"
+responses = "^0.24.1"
+pytest-mock = "^3.12.0"
+pytest-httpserver = "^1.0.8"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
