@@ -1,14 +1,20 @@
 import click
-from rich.table import Table
+
 from rich.console import Console
-from rich import box
-import requests
 
 from wagtail_devtools_cli.dataclasses import Item, Report
-from wagtail_devtools_cli.helpers import rich_table, STYLE_OK, STYLE_ERROR, STYLE_WARNING, STYLE_INFO
 from wagtail_devtools_cli.handlers import RequestHandler
+from wagtail_devtools_cli.helpers import (
+    STYLE_ERROR,
+    STYLE_INFO,
+    STYLE_OK,
+    STYLE_WARNING,
+    rich_table,
+)
 
-console = Console() # Initialize the console for all output
+
+console = Console()  # Initialize the console for all output
+
 
 @click.command()
 @click.option(
@@ -64,7 +70,7 @@ def main(url, all, expanded, username, password, endpoint, login_path):
     request_handler = RequestHandler(url, login_path)
     request_handler.login(username, password)
 
-    if not request_handler.is_authenticated(): # pragma: no cover
+    if not request_handler.is_authenticated():  # pragma: no cover
         console.print(
             "Not authenticated: please check your username and password", style="red1"
         )
@@ -81,7 +87,7 @@ def main(url, all, expanded, username, password, endpoint, login_path):
     else:
         response = request_handler.get_response(index_endpoint)
 
-    if response.status_code == 404: # pragma: no cover
+    if response.status_code == 404:  # pragma: no cover
         console.print("Endpoint not found", style="red1")
         return
 

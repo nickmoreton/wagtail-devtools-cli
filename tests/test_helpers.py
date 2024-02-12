@@ -1,20 +1,22 @@
+from dataclasses import dataclass
+from unittest.mock import Mock
+
 import pytest
+
+from rich import box
+
+from wagtail_devtools_cli.cli import Item
 from wagtail_devtools_cli.helpers import (
     BASE_COLUMN,
     BOX,
-    STYLE_OK,
     STYLE_ERROR,
-    STYLE_WARNING,
     STYLE_INFO,
+    STYLE_OK,
+    STYLE_WARNING,
     TABLE_FORMAT,
     rich_result_row,
     rich_table,
 )
-from rich import box
-from dataclasses import dataclass
-from unittest.mock import Mock
-from wagtail_devtools_cli.cli import Item
-import pytest
 
 
 def test_constants():
@@ -63,7 +65,6 @@ def test_rich_table_no_items():
     assert table.caption == caption
     assert table.style == style
     assert table.row_count == 0
-
 
 
 @dataclass

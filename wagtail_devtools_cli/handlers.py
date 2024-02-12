@@ -5,7 +5,7 @@ class RequestHandler:
     def __init__(self, url, login_path="/admin/login/"):
         self.url = url
         self._is_authenticated = False
-        self.login_url = f"{self.url}/{login_path.strip("/")}/"
+        self.login_url = f"{self.url}/{login_path.strip(" / ")}/"
         self.session = requests.Session()
 
     def login(self, username, password):
@@ -14,8 +14,10 @@ class RequestHandler:
             if login_form.status_code == 404:
                 raise Exception("Login page not found")
         except requests.exceptions.ConnectionError:
-            exit("Connection error: please check the URL and make sure the server is running") # pragma: no cover
-        
+            exit(
+                "Connection error: please check the URL and make sure the server is running"
+            )  # pragma: no cover
+
         user = {
             "username": username,
             "password": password,

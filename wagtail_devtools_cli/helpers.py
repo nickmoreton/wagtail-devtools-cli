@@ -1,6 +1,7 @@
 from rich import box
 from rich.table import Table
 
+
 BOX = box.MARKDOWN
 STYLE_OK = "green1"
 STYLE_ERROR = "red1"

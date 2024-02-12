@@ -1,7 +1,6 @@
 from dataclasses import dataclass
-from wagtail_devtools_cli.cli import Report, Item
-import requests
-import responses
+
+from wagtail_devtools_cli.cli import Report
 
 
 @dataclass

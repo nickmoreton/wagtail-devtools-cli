@@ -1,9 +1,9 @@
 import json
-import socket
-import time
-import pytest
-from http.server import BaseHTTPRequestHandler, HTTPServer
 import threading
+
+from http.server import BaseHTTPRequestHandler, HTTPServer
+
+import pytest
 
 
 class MockServer(BaseHTTPRequestHandler):
@@ -27,7 +27,7 @@ class MockServer(BaseHTTPRequestHandler):
             "sessionid=FakeSession; Path=/; Secure; HttpOnly",
         )
         self.send_header("Content-type", content_type)
-        self.send_header("Content-Length", 0) # avoids "Connection reset by peer" error
+        self.send_header("Content-Length", 0)  # avoids "Connection reset by peer" error
         self.end_headers()
 
     def do_GET(self):
