@@ -5,7 +5,8 @@ class RequestHandler:
     def __init__(self, url, login_path="/admin/login/"):
         self.url = url
         self._is_authenticated = False
-        self.login_url = f"{self.url}/{login_path.strip(" / ")}/"
+        login_path = login_path.strip("/")
+        self.login_url = f"{self.url}/{login_path}/"
         self.session = requests.Session()
 
     def login(self, username, password):

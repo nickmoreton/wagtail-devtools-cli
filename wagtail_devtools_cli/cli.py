@@ -80,7 +80,8 @@ def main(url, all, expanded, username, password, endpoint, login_path):
     console.print("Querying the wagtail-exposapi endpoint...", style="orange1")
 
     # Query the endpoint
-    index_endpoint = url + f"/{endpoint.strip(" / ")}/"
+    endpoint = endpoint.strip("/")
+    index_endpoint = url + f"/{endpoint}/"
 
     if all:
         response = request_handler.get_response(index_endpoint + "?all=true")
