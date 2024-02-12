@@ -40,15 +40,35 @@ class MockServer(BaseHTTPRequestHandler):
                 {
                     "group": "AdminEditPage",
                     "name": "HomePage (sandbox_home)",
-                    "url": "http://localhost:8000/admin/pages/3/edit/",
+                    "url": "http://localhost:8888/admin/pages/3/edit/",
                 },
             ]
             self._set_headers_get()
-            self.wfile.write(json.dumps(data).encode("utf-8"))
+            self.wfile.write(bytes(json.dumps(data), "utf-8"))
+            return
+        if self.path == "/exposapi/?all=1":
+            data = [
+                {
+                    "group": "AdminEditPage1",
+                    "name": "HomePage (sandbox_home)",
+                    "url": "http://localhost:8888/admin/pages/3/edit/",
+                },
+                {
+                    "group": "AdminEditPage2",
+                    "name": "HomePage (sandbox_home)",
+                    "url": "http://localhost:8888/admin/pages/4/edit/",
+                },
+            ]
+            self._set_headers_get()
+            self.wfile.write(bytes(json.dumps(data), "utf-8"))
             return
         if self.path == "/failed-login/":
             self._set_headers_get(401)
             self.wfile.write("Not Authenticated".encode("utf-8"))
+            return
+        if self.path == "/admin/pages/3/edit/":
+            self._set_headers_get()
+            self.wfile.write("Admin Edit Page".encode("utf-8"))
             return
         self._set_headers_get()
         self.wfile.write("This is a mock response".encode("utf-8"))
