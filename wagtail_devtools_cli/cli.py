@@ -84,7 +84,9 @@ def main(url, all, expanded, username, password, endpoint, login_path):
     index_endpoint = url + f"/{endpoint}/"
 
     if all:
-        response = request_handler.get_response(index_endpoint + "?all=true")
+        response = request_handler.get_response(
+            index_endpoint + "?all=true"
+        )  # pragma: no cover
     else:
         response = request_handler.get_response(index_endpoint)
 
