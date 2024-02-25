@@ -1,5 +1,6 @@
 import click
 
+from dotenv import dotenv_values
 from rich.console import Console
 
 from wagtail_devtools_cli.dataclasses import Item, Report
@@ -13,47 +14,44 @@ from wagtail_devtools_cli.helpers import (
 )
 
 
+config = dotenv_values(".env")
 console = Console()  # Initialize the console for all output
 
 
 @click.command()
 @click.option(
-    "-h",
     "--host",
-    default="http://localhost:8000",
+    default=config.get("HOST", "http://localhost:8000"),
     help="The URL of the Wagtail project to be checked",
 )
 @click.option(
-    "-a",
     "--all",
-    is_flag=True,
+    is_flag=config.get("ALL", False),
     help="Query all records (default: False)",
 )
 @click.option(
-    "-e", "--expanded", is_flag=True, help="Show expanded output (default: False)"
+    "--expanded",
+    is_flag=config.get("EXPANDED", False),
+    help="Show expanded output (default: False)",
 )
 @click.option(
-    "-u",
     "--username",
-    default="superuser",
+    default=config.get("USERNAME", "superuser"),
     help="The username to use for authentication (default: superuser)",
 )
 @click.option(
-    "-p",
     "--password",
-    default="superuser",
+    default=config.get("PASSWORD", "superuser"),
     help="The password to use for authentication (default: superuser)",
 )
 @click.option(
-    "-t",
     "--endpoint",
-    default="exposapi",
+    default=config.get("ENDPOINT", "exposapi"),
     help="The endpoint to query for records (default: exposapi)",
 )
 @click.option(
-    "-l",
     "--login-path",
-    default="/admin/login/",
+    default=config.get("LOGIN_PATH", "/admin/login/"),
     help="The path to the login page (default: /admin/login/)",
 )
 def main(host, all, expanded, username, password, endpoint, login_path):
