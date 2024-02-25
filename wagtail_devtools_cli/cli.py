@@ -98,13 +98,14 @@ def main(url, all, expanded, username, password, endpoint, login_path):
     results = [e for e in response.json()]
     report = Report()
 
-    for result in results:
-        item = Item(request_handler, **result)
-        report.items.append(item)
+    with click.progressbar(results, label="Processing results...") as progress:
+        for result in progress:
+            item = Item(request_handler, **result)
+            report.items.append(item)
 
-    if request_handler.is_authenticated():
-        request_handler.logout()
-        console.print("Logged out")
+        if request_handler.is_authenticated():
+            request_handler.logout()
+            console.print("Logged out")
 
     console.print("")
     console.print(f"Found {len(results)} records")
