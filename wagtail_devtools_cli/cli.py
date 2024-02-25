@@ -18,8 +18,8 @@ console = Console()  # Initialize the console for all output
 
 @click.command()
 @click.option(
-    "-u",
-    "--url",
+    "-h",
+    "--host",
     default="http://localhost:8000",
     help="The URL of the Wagtail project to be checked",
 )
@@ -56,7 +56,7 @@ console = Console()  # Initialize the console for all output
     default="/admin/login/",
     help="The path to the login page (default: /admin/login/)",
 )
-def main(url, all, expanded, username, password, endpoint, login_path):
+def main(host, all, expanded, username, password, endpoint, login_path):
     """A CLI tool for reporting errors in Wagtail projects
 
     It does this by querying the wagtail-exposapi endpoint and checking
@@ -67,7 +67,7 @@ def main(url, all, expanded, username, password, endpoint, login_path):
     """
 
     # Authenticate a user
-    request_handler = RequestHandler(url, login_path)
+    request_handler = RequestHandler(host, login_path)
     request_handler.login(username, password)
 
     if not request_handler.is_authenticated():  # pragma: no cover
@@ -81,7 +81,7 @@ def main(url, all, expanded, username, password, endpoint, login_path):
 
     # Query the endpoint
     endpoint = endpoint.strip("/")
-    index_endpoint = url + f"/{endpoint}/"
+    index_endpoint = host + f"/{endpoint}/"
 
     if all:
         response = request_handler.get_response(
