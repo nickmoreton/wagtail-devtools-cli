@@ -17,7 +17,7 @@ def test_main(mock_server):
 def test_main_expanded(mock_server):
     host = f"http://{mock_server.server_address[0]}:{mock_server.server_address[1]}"
     runner = CliRunner()
-    result = runner.invoke(main, ["--expanded", "--host", host])
+    result = runner.invoke(main, ["--expanded", True, "--host", host])
 
     assert result.exit_code == 0
 
