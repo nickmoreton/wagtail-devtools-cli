@@ -10,6 +10,7 @@ python = "^3.8"
 click = "^8.1.7"
 requests = "^2.31.0"
 rich = "^13.7.0"
+python-dotenv = "^1.0.1"
 
 [tool.poetry.scripts]
 cli = "wagtail_devtools_cli.cli:main"

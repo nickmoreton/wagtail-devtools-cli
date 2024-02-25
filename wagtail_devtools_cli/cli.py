@@ -1,5 +1,6 @@
 import click
 
+from dotenv import dotenv_values
 from rich.console import Console
 
 from wagtail_devtools_cli.dataclasses import Item, Report
@@ -13,50 +14,47 @@ from wagtail_devtools_cli.helpers import (
 )
 
 
+config = dotenv_values(".env")
 console = Console()  # Initialize the console for all output
 
 
 @click.command()
 @click.option(
-    "-u",
-    "--url",
-    default="http://localhost:8000",
+    "--host",
+    default=config.get("HOST", "http://localhost:8000"),
     help="The URL of the Wagtail project to be checked",
 )
 @click.option(
-    "-a",
     "--all",
-    is_flag=True,
+    is_flag=config.get("ALL", False),
     help="Query all records (default: False)",
 )
 @click.option(
-    "-e", "--expanded", is_flag=True, help="Show expanded output (default: False)"
+    "--expanded",
+    is_flag=config.get("EXPANDED", False),
+    help="Show expanded output (default: False)",
 )
 @click.option(
-    "-u",
     "--username",
-    default="superuser",
+    default=config.get("USERNAME", "superuser"),
     help="The username to use for authentication (default: superuser)",
 )
 @click.option(
-    "-p",
     "--password",
-    default="superuser",
+    default=config.get("PASSWORD", "superuser"),
     help="The password to use for authentication (default: superuser)",
 )
 @click.option(
-    "-t",
     "--endpoint",
-    default="exposapi",
+    default=config.get("ENDPOINT", "exposapi"),
     help="The endpoint to query for records (default: exposapi)",
 )
 @click.option(
-    "-l",
     "--login-path",
-    default="/admin/login/",
+    default=config.get("LOGIN_PATH", "/admin/login/"),
     help="The path to the login page (default: /admin/login/)",
 )
-def main(url, all, expanded, username, password, endpoint, login_path):
+def main(host, all, expanded, username, password, endpoint, login_path):
     """A CLI tool for reporting errors in Wagtail projects
 
     It does this by querying the wagtail-exposapi endpoint and checking
@@ -67,7 +65,7 @@ def main(url, all, expanded, username, password, endpoint, login_path):
     """
 
     # Authenticate a user
-    request_handler = RequestHandler(url, login_path)
+    request_handler = RequestHandler(host, login_path)
     request_handler.login(username, password)
 
     if not request_handler.is_authenticated():  # pragma: no cover
@@ -81,7 +79,7 @@ def main(url, all, expanded, username, password, endpoint, login_path):
 
     # Query the endpoint
     endpoint = endpoint.strip("/")
-    index_endpoint = url + f"/{endpoint}/"
+    index_endpoint = host + f"/{endpoint}/"
 
     if all:
         response = request_handler.get_response(
@@ -98,13 +96,14 @@ def main(url, all, expanded, username, password, endpoint, login_path):
     results = [e for e in response.json()]
     report = Report()
 
-    for result in results:
-        item = Item(request_handler, **result)
-        report.items.append(item)
+    with click.progressbar(results, label="Processing results...") as progress:
+        for result in progress:
+            item = Item(request_handler, **result)
+            report.items.append(item)
 
-    if request_handler.is_authenticated():
-        request_handler.logout()
-        console.print("Logged out")
+        if request_handler.is_authenticated():
+            request_handler.logout()
+            console.print("Logged out")
 
     console.print("")
     console.print(f"Found {len(results)} records")

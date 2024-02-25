@@ -9,7 +9,7 @@ from wagtail_devtools_cli.dataclasses import Item, Report
 def test_main(mock_server):
     host = f"http://{mock_server.server_address[0]}:{mock_server.server_address[1]}"
     runner = CliRunner()
-    result = runner.invoke(main, ["--url", host])
+    result = runner.invoke(main, ["--host", host])
 
     assert result.exit_code == 0
 
@@ -17,7 +17,7 @@ def test_main(mock_server):
 def test_main_expanded(mock_server):
     host = f"http://{mock_server.server_address[0]}:{mock_server.server_address[1]}"
     runner = CliRunner()
-    result = runner.invoke(main, ["--expanded", "--url", host])
+    result = runner.invoke(main, ["--expanded", True, "--host", host])
 
     assert result.exit_code == 0
 
@@ -25,7 +25,7 @@ def test_main_expanded(mock_server):
 def test_not_authenticated(mock_server):
     host = f"http://{mock_server.server_address[0]}:{mock_server.server_address[1]}"
     runner = CliRunner()
-    result = runner.invoke(main, ["--url", f"{host}/failed-login/"])
+    result = runner.invoke(main, ["--host", f"{host}/failed-login/"])
 
     assert result.exit_code == 1
 
@@ -33,7 +33,7 @@ def test_not_authenticated(mock_server):
 def test_404(mock_server):
     host = f"http://{mock_server.server_address[0]}:{mock_server.server_address[1]}"
     runner = CliRunner()
-    result = runner.invoke(main, ["--url", f"{host}/not-a-path/"])
+    result = runner.invoke(main, ["--host", f"{host}/not-a-path/"])
 
     assert result.exit_code == 1
 
